@@ -664,6 +664,15 @@ async def submit_query(query_data: StudentQuery):
                 detail="All fields are required.",
             )
         question_details = QUESTIONS.get(query_data.questionId)
+        if query_data.questionId not in QUESTIONS:
+            return {
+                "questionId": query_data.questionId,
+                "response": "Question ID not found.",
+                "status": "error",
+                "message": f"Question ID '{query_data.questionId}' does not exist.",
+            }
+
+
         # Prepare the prompt for OpenRouter
         prompt = PROMPT_TEMPLATE.format(
             question_details=question_details,
